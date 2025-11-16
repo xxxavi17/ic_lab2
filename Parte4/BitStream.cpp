@@ -1,9 +1,9 @@
 
-#include "BitStream.h" // Header da classe BitStream
+#include "BitStream.h"
 #include <iostream>
 
 
-// Construtor: abre o ficheiro em modo leitura ('r') ou escrita ('w')
+//abre o ficheiro em modo leitura ('r') ou escrita ('w')
 BitStream::BitStream(const std::string& filename, const std::string& mode)
     : mode(mode), buffer(0), bitCount(0) {
     if (mode == "w") {
@@ -19,13 +19,13 @@ BitStream::BitStream(const std::string& filename, const std::string& mode)
 }
 
 
-// Destrutor: garante que o ficheiro é fechado corretamente
+//garante que o ficheiro é fechado corretamente
 BitStream::~BitStream() {
     close();
 }
 
 
-// Fecha o ficheiro e garante que o buffer é escrito (flush) se necessário
+//garante que o buffer é escrito
 void BitStream::close() {
     if (mode == "w" && bitCount > 0) {
         flush();
@@ -36,7 +36,7 @@ void BitStream::close() {
 }
 
 
-// Escreve o buffer restante no ficheiro (quando não está cheio)
+//escreve o buffer restante no ficheiro, quando não está cheio
 void BitStream::flush() {
     if (mode == "w" && bitCount > 0) {
         file.write((char*)&buffer, 1);
@@ -46,7 +46,7 @@ void BitStream::flush() {
 }
 
 
-// Escreve um bit no buffer; quando o buffer está cheio (8 bits), grava no ficheiro
+//escreve um bit no buffer; quando o buffer está cheio (8 bits), grava no ficheiro
 void BitStream::writeBit(int bit) {
     if (mode != "w") return;
     buffer = buffer | ((bit & 1) << (7 - bitCount)); // Adiciona o bit na posição correta
@@ -59,7 +59,7 @@ void BitStream::writeBit(int bit) {
 }
 
 
-// Escreve 'n' bits de um valor inteiro, do bit mais significativo ao menos
+//escreve 'n' bits de um valor inteiro, do bit mais significativo ao menos
 void BitStream::writeNBits(unsigned int value, int n) {
     if (mode != "w") return;
     for (int i = n - 1; i >= 0; --i) {
@@ -68,13 +68,13 @@ void BitStream::writeNBits(unsigned int value, int n) {
 }
 
 
-// Lê um bit do ficheiro; recarrega o buffer se necessário
+//le um bit do ficheiro e recarrega o buffer se necessario
 int BitStream::readBit() {
     if (mode != "r") return -1;
-    // Se o buffer está vazio, lê o próximo byte
+    // Se o buffer está vazio, le o próximo byte
     if (bitCount == 0) {
         if (!file.read((char*)&buffer, 1)) {
-            return -1; // Fim do ficheiro
+            return -1;
         }
         bitCount = 8;
     }
@@ -86,7 +86,7 @@ int BitStream::readBit() {
 }
 
 
-// Lê 'n' bits do ficheiro e devolve como inteiro
+//le 'n' bits do ficheiro e devolve como inteiro
 unsigned int BitStream::readNBits(int n) {
     if (mode != "r") return 0;
     unsigned int value = 0;

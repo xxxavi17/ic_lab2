@@ -1,4 +1,3 @@
-// Parte4/BitStream.h
 #ifndef BITSTREAM_H
 #define BITSTREAM_H
 
@@ -23,4 +22,4 @@ private:
     void flush();
 };
 
-#endif // BITSTREAM_H
+#endif

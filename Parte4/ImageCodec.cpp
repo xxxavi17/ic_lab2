@@ -1,4 +1,3 @@
-// Parte4/ImageCodec.cpp
 #include "ImageCodec.h"
 #include <iostream>
 #include <cmath>
@@ -65,7 +64,7 @@ void ImageCodec::encode(const std::string& inputFile, const std::string& outputF
     bs.writeNBits(m, 16); 
     bs.writeNBits((int)predType, 8);
 
-    // Matriz para guardar resíduos normalizados para visualização
+    //matriz para guardar resíduos normalizados para a visualização
     cv::Mat residual_img = cv::Mat::zeros(image.rows, image.cols, CV_8U);
 
     for (int r = 0; r < image.rows; ++r) {
@@ -73,7 +72,7 @@ void ImageCodec::encode(const std::string& inputFile, const std::string& outputF
             int prediction = getPrediction(image, r, c, predType);
             int residual = (int)image.at<uchar>(r, c) - prediction;
 
-            // Salva o resíduo normalizado para visualização
+            //salva o resíduo normalizado para a visualização
             int norm_residual = residual + 128;
             if (norm_residual < 0) norm_residual = 0;
             if (norm_residual > 255) norm_residual = 255;
@@ -87,7 +86,7 @@ void ImageCodec::encode(const std::string& inputFile, const std::string& outputF
     }
     bs.close();
 
-    // Salva a imagem dos resíduos para análise visual
+    //salva a imagem dos resíduos para análise visual
     std::string residual_path = outputFile + "_residual.png";
     cv::imwrite(residual_path, residual_img);
     std::cout << "Codificação concluída. Imagem de resíduos salva em " << residual_path << std::endl;
@@ -120,18 +119,15 @@ void ImageCodec::decode(const std::string& inputFile, const std::string& outputF
 
             std::vector<bool> bits_lidos;
             
-            // --- INÍCIO DA CORREÇÃO ---
-            // 1. Ler parte unária (quociente)
             int bit = bs.readBit();
             while (bit == 0) {
                 bits_lidos.push_back(false);
                 bit = bs.readBit();
                 if (bit == -1) throw std::runtime_error("Invalid Golomb code: no terminator for unary code");
             }
-            // Terminador unário
+
             bits_lidos.push_back(true);
 
-            // 2. Ler parte binária (resto)
             if (m > 1) {
                 int k = b;
                 unsigned int power_of_2_b = 1 << k;
@@ -151,11 +147,9 @@ void ImageCodec::decode(const std::string& inputFile, const std::string& outputF
                     bits_lidos.push_back(bit == 1);
                 }
             }
-            // --- FIM DA CORREÇÃO ---
 
             int residual = golomb.decodeInterleaving(bits_lidos);
 
-            // Reconstruir
             int pixelValue = prediction + residual;
             if (pixelValue < 0) pixelValue = 0;
             if (pixelValue > 255) pixelValue = 255;

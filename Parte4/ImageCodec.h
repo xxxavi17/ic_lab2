@@ -1,4 +1,3 @@
-// Parte4/ImageCodec.h
 #ifndef IMAGECODEC_H
 #define IMAGECODEC_H
 
@@ -26,4 +25,4 @@ private:
     int estimateOptimalM(const cv::Mat& image, PredictorType predType);
 };
 
-#endif // IMAGECODEC_H
+#endif
