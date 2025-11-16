@@ -1,0 +1,3 @@
+/home/goncalolima/mestrado/ic/ic_lab2/Parte4/build/CMakeFiles/image_codec.dir
+/home/goncalolima/mestrado/ic/ic_lab2/Parte4/build/CMakeFiles/edit_cache.dir
+/home/goncalolima/mestrado/ic/ic_lab2/Parte4/build/CMakeFiles/rebuild_cache.dir
